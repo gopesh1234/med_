@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+            .input-box input {
+                flex: 1;
+                padding: 10px;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                font-size: 16px;
+            }
+
+            .input-box button {
+                padding: 10px 20px;
+                border: none;
+                background: #007bff;
+                color: #fff;
+                border-radius: 8px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background 0.2s ease-in-out;
+            }
+
+                .input-box button:hover {
+                    background: #0056b3;
+                }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f9fafb;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            transition: transform 0.2s;
+        }
+
+            li:hover {
+                transform: translateX(4px);
+            }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .counter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .counter button {
+                background: #007bff;
+                border: none;
+                color: white;
+                font-size: 18px;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                cursor: pointer;
+                transition: background 0.2s ease-in-out;
+            }
+
+                .counter button:hover {
+                    background: #0056b3;
+                }
+
+        .count {
+            min-width: 24px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Shopping List</h2>
+        <div class="input-box">
+            <input type="text" id="itemInput" placeholder="Enter item name..." />
+            <button onclick="addItem()">Add</button>
+        </div>
+        <ul id="itemList"></ul>
+    </div>
+
+    <script>
+        let items = JSON.parse(localStorage.getItem("items")) || [];
+
+        function renderList() {
+            const list = document.getElementById("itemList");
+            list.innerHTML = "";
+
+            items.forEach((item, index) => {
+                const li = document.createElement("li");
+
+                const name = document.createElement("span");
+                name.className = "item-name";
+                name.textContent = item.name;
+
+                const counter = document.createElement("div");
+                counter.className = "counter";
+
+                const minusBtn = document.createElement("button");
+                minusBtn.textContent = "-";
+                minusBtn.onclick = () => updateCount(index, -1);
+
+                const count = document.createElement("span");
+                count.className = "count";
+                count.textContent = item.count;
+
+                const plusBtn = document.createElement("button");
+                plusBtn.textContent = "+";
+                plusBtn.onclick = () => updateCount(index, 1);
+
+                counter.appendChild(minusBtn);
+                counter.appendChild(count);
+                counter.appendChild(plusBtn);
+
+                li.appendChild(name);
+                li.appendChild(counter);
+                list.appendChild(li);
+            });
+
+            localStorage.setItem("items", JSON.stringify(items));
+        }
+
+        function addItem() {
+            const input = document.getElementById("itemInput");
+            const itemName = input.value.trim();
+            if (itemName) {
+                items.push({ name: itemName, count: 0 });
+                input.value = "";
+                renderList();
+            }
+        }
+
+        function updateCount(index, change) {
+            items[index].count += change;
+            if (items[index].count < 0) items[index].count = 0;
+            renderList();
+        }
+
+        // Initial render
+        renderList();
+    </script>
+</body>
+</html>
