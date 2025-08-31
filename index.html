@@ -4,56 +4,58 @@
     <meta charset="utf-8" />
     <title>@ViewData["Title"]</title>
     <style>
+        /* --------- Base Styles (Mobile First) --------- */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f4f7fa;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 100%;
             margin: auto;
             background: #fff;
             border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 20px;
-            color: #333;
+            margin-bottom: 16px;
+            color: #222;
+            font-size: 22px;
         }
 
         .input-box {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 18px;
         }
 
-            .input-box input {
-                flex: 1;
-                padding: 10px;
-                border: 2px solid #ddd;
-                border-radius: 8px;
-                font-size: 16px;
-            }
+        .input-box input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
 
-            .input-box button {
-                padding: 10px 20px;
-                border: none;
-                background: #007bff;
-                color: #fff;
-                border-radius: 8px;
-                font-size: 16px;
-                cursor: pointer;
-                transition: background 0.2s ease-in-out;
-            }
+        .input-box button {
+            padding: 10px 16px;
+            border: none;
+            background: #007bff;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-                .input-box button:hover {
-                    background: #0056b3;
-                }
+        .input-box button:hover {
+            background: #0056b3;
+        }
 
         ul {
             list-style: none;
@@ -64,58 +66,113 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
             background: #f9fafb;
-            padding: 12px 16px;
+            padding: 12px;
             margin-bottom: 10px;
             border-radius: 8px;
             border: 1px solid #ddd;
-            transition: transform 0.2s;
         }
-
-            li:hover {
-                transform: translateX(4px);
-            }
 
         .item-name {
             font-size: 16px;
             font-weight: 500;
             color: #333;
+            flex: 1;
         }
 
         .counter {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
+            margin-left: auto;
         }
 
-            .counter button {
-                background: #007bff;
-                border: none;
-                color: white;
-                font-size: 18px;
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                cursor: pointer;
-                transition: background 0.2s ease-in-out;
-            }
+        .counter button {
+            background: #007bff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-                .counter button:hover {
-                    background: #0056b3;
-                }
+        .counter button:hover {
+            background: #0056b3;
+        }
 
         .count {
             min-width: 24px;
             text-align: center;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             color: #444;
+        }
+
+        .actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .actions button {
+            padding: 6px 10px;
+            font-size: 13px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .edit-btn {
+            background: #ffc107;
+            color: #222;
+        }
+
+        .edit-btn:hover {
+            background: #e0a800;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #b52a35;
+        }
+
+        /* -------- Responsive -------- */
+        @@media (min-width: 600px) {
+            .container {
+                max-width: 600px;
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .input-box input {
+                font-size: 17px;
+            }
+
+            .input-box button {
+                font-size: 16px;
+            }
+
+            .actions button {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Shopping List</h2>
+        <h2>Medicines</h2>
         <div class="input-box">
             <input type="text" id="itemInput" placeholder="Enter item name..." />
             <button onclick="addItem()">Add</button>
@@ -156,8 +213,25 @@
                 counter.appendChild(count);
                 counter.appendChild(plusBtn);
 
+                const actions = document.createElement("div");
+                actions.className = "actions";
+
+                const editBtn = document.createElement("button");
+                editBtn.className = "edit-btn";
+                editBtn.textContent = "E";
+                editBtn.onclick = () => editItem(index);
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.className = "delete-btn";
+                deleteBtn.textContent = "X";
+                deleteBtn.onclick = () => deleteItem(index);
+
+                actions.appendChild(editBtn);
+                actions.appendChild(deleteBtn);
+
                 li.appendChild(name);
                 li.appendChild(counter);
+                li.appendChild(actions);
                 list.appendChild(li);
             });
 
@@ -178,6 +252,21 @@
             items[index].count += change;
             if (items[index].count < 0) items[index].count = 0;
             renderList();
+        }
+
+        function editItem(index) {
+            const newName = prompt("Edit item name:", items[index].name);
+            if (newName !== null && newName.trim() !== "") {
+                items[index].name = newName.trim();
+                renderList();
+            }
+        }
+
+        function deleteItem(index) {
+            if (confirm("Are you sure you want to delete this item?")) {
+                items.splice(index, 1);
+                renderList();
+            }
         }
 
         // Initial render
