@@ -1,33 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <style>
-        /* --------- Base Styles (Mobile First) --------- */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f7fa;
+        /* Base Reset */
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f3f6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             padding: 15px;
         }
 
         .container {
-            max-width: 100%;
-            margin: auto;
+            width: 100%;
+            max-width: 420px;   /* fixed box width for mobile */
             background: #fff;
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 16px;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
             color: #222;
-            font-size: 22px;
         }
 
+        /* Input Row */
         .input-box {
             display: flex;
             gap: 8px;
@@ -36,27 +48,28 @@
 
         .input-box input {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
+            font-size: 1rem;
             border: 2px solid #ddd;
             border-radius: 8px;
-            font-size: 16px;
         }
 
         .input-box button {
-            padding: 10px 16px;
+            padding: 12px 16px;
             border: none;
             background: #007bff;
             color: #fff;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 1rem;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s ease-in-out;
         }
 
         .input-box button:hover {
             background: #0056b3;
         }
 
+        /* Item List */
         ul {
             list-style: none;
             padding: 0;
@@ -66,38 +79,39 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
             background: #f9fafb;
-            padding: 12px;
+            padding: 12px 14px;
             margin-bottom: 10px;
             border-radius: 8px;
             border: 1px solid #ddd;
         }
 
         .item-name {
-            font-size: 16px;
+            flex: 1;
+            font-size: 1rem;
             font-weight: 500;
             color: #333;
-            flex: 1;
+            overflow-wrap: anywhere;
         }
 
+        /* Counter Section */
         .counter {
             display: flex;
             align-items: center;
             gap: 6px;
-            margin-left: auto;
+            margin-left: 8px;
         }
 
         .counter button {
             background: #007bff;
             border: none;
-            color: white;
-            font-size: 16px;
-            width: 28px;
-            height: 28px;
+            color: #fff;
+            font-size: 1.2rem;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s ease-in-out;
         }
 
         .counter button:hover {
@@ -105,78 +119,79 @@
         }
 
         .count {
-            min-width: 24px;
+            min-width: 26px;
             text-align: center;
-            font-size: 15px;
+            font-size: 1rem;
             font-weight: bold;
             color: #444;
         }
 
+        /* Action Buttons (edit/delete) */
         .actions {
             display: flex;
+            align-items: center;
             gap: 6px;
-            margin-top: 6px;
+            margin-left: 8px;
         }
 
         .actions button {
-            padding: 6px 10px;
-            font-size: 13px;
+            background: #ff4d4f;
             border: none;
+            color: #fff;
+            font-size: 0.9rem;
+            padding: 6px 10px;
             border-radius: 6px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: background 0.2s ease-in-out;
         }
 
-        .edit-btn {
-            background: #ffc107;
-            color: #222;
+        .actions button.edit {
+            background: #28a745;
         }
 
-        .edit-btn:hover {
-            background: #e0a800;
+        .actions button.edit:hover {
+            background: #1e7e34;
         }
 
-        .delete-btn {
-            background: #dc3545;
-            color: white;
+        .actions button:hover {
+            background: #cc0000;
         }
 
-        .delete-btn:hover {
-            background: #b52a35;
-        }
-
-        /* -------- Responsive -------- */
-        @@media (min-width: 600px) {
-            .container {
-                max-width: 600px;
-                padding: 20px;
-            }
-
+        /* Mobile Adjustments */
+        @@media (max-width: 480px) {
             h2 {
-                font-size: 26px;
+                font-size: 1.4rem;
             }
-
             .input-box input {
-                font-size: 17px;
+                font-size: 0.95rem;
+                padding: 10px;
             }
-
             .input-box button {
-                font-size: 16px;
+                font-size: 0.9rem;
+                padding: 10px 14px;
             }
-
-            .actions button {
-                font-size: 14px;
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .counter, .actions {
+                margin-left: 0;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Medicines</h2>
+        <h2>Shopping List</h2>
+
+        <!-- Input Row -->
         <div class="input-box">
             <input type="text" id="itemInput" placeholder="Enter item name..." />
             <button onclick="addItem()">Add</button>
         </div>
+
+        <!-- List -->
         <ul id="itemList"></ul>
     </div>
 
@@ -213,17 +228,17 @@
                 counter.appendChild(count);
                 counter.appendChild(plusBtn);
 
+                // Actions (Edit / Delete)
                 const actions = document.createElement("div");
                 actions.className = "actions";
 
                 const editBtn = document.createElement("button");
-                editBtn.className = "edit-btn";
-                editBtn.textContent = "E";
+                editBtn.className = "edit";
+                editBtn.textContent = "Edit";
                 editBtn.onclick = () => editItem(index);
 
                 const deleteBtn = document.createElement("button");
-                deleteBtn.className = "delete-btn";
-                deleteBtn.textContent = "X";
+                deleteBtn.textContent = "Del";
                 deleteBtn.onclick = () => deleteItem(index);
 
                 actions.appendChild(editBtn);
